@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seoul Survival Kit — taxi card, review slang decoder, today's closures</title>
+<meta name="description" content="Free tools for first-time visitors to Seoul: show-the-driver taxi card, Korean restaurant review slang decoder, and today's road closures and rallies.">
+<meta property="og:title" content="Seoul Survival Kit">
+<meta property="og:description" content="Taxi card, review slang decoder, and today's closures in Seoul.">
+<link rel="canonical" href="https://hannaappa.github.io/">
+<style>
+  :root { --bg:#faf8f5; --card:#fff; --ink:#1c1917; --mute:#78716c; --line:#e7e5e4; --acc:#0f766e; --acc2:#ccfbf1; --warn:#b45309; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#141413; --card:#1e1d1b; --ink:#f5f5f4; --mute:#a8a29e; --line:#33302d; --acc:#2dd4bf; --acc2:#134e4a; --warn:#fbbf24; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { padding:40px 16px 8px; max-width:880px; margin:0 auto; }
+  h1 { font-size:2rem; margin:0 0 4px; letter-spacing:-.02em; }
+  header p { color:var(--mute); margin:0; }
+  nav { max-width:880px; margin:16px auto 0; padding:0 16px; display:flex; gap:8px; flex-wrap:wrap; }
+  nav a { text-decoration:none; color:var(--ink); border:1px solid var(--line); border-radius:999px; padding:6px 14px; font-size:.9rem; background:var(--card); }
+  main { max-width:880px; margin:0 auto; padding:16px; display:grid; gap:20px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; }
+  h2 { margin:0 0 4px; font-size:1.3rem; }
+  .sub { color:var(--mute); margin:0 0 14px; font-size:.95rem; }
+  input, textarea { width:100%; font:inherit; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
+  textarea { min-height:110px; resize:vertical; }
+  button { font:inherit; border:0; border-radius:10px; padding:10px 16px; background:var(--acc); color:#fff; cursor:pointer; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; }
+  .chips button { background:var(--acc2); color:var(--ink); padding:6px 12px; font-size:.9rem; }
+  .row { display:flex; gap:8px; }
+  .row input { flex:1; }
+  #card { display:none; position:fixed; inset:0; background:#fff; color:#000; z-index:9; padding:24px; text-align:center; flex-direction:column; justify-content:center; }
+  #card.on { display:flex; }
+  #card .ko { font-size:clamp(2.4rem, 11vw, 6rem); font-weight:800; line-height:1.2; word-break:keep-all; }
+  #card .say { font-size:clamp(1.4rem, 6vw, 2.6rem); margin-top:24px; }
+  #card .en { color:#666; margin-top:16px; }
+  #card button { margin:32px auto 0; background:#000; }
+  .hit { border-left:3px solid var(--acc); padding:6px 12px; margin:8px 0; background:var(--bg); border-radius:0 8px 8px 0; }
+  .hit b { font-size:1.05rem; }
+  .flag { border-left-color:var(--warn); }
+  .list a { display:block; padding:10px 0; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; }
+  .list a:last-child { border-bottom:0; }
+  .list small { color:var(--mute); display:block; }
+  mark { background:var(--acc2); color:inherit; border-radius:4px; padding:0 2px; }
+  footer { max-width:880px; margin:0 auto; padding:24px 16px 48px; color:var(--mute); font-size:.85rem; }
+  footer a { color:var(--acc); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Seoul Survival Kit</h1>
+  <p>Small tools for your first trip to Seoul. Free, no sign-up, works offline once loaded.</p>
+</header>
+<nav><a href="#today">Today's closures</a><a href="#taxi">Taxi card</a><a href="#slang">Review slang decoder</a><a href="#guides">Guides</a></nav>
+<main>
+
+<section id="today">
+  <h2>🚧 Today in Seoul: closures &amp; rallies</h2>
+  <p class="sub">Weekend road closures, festivals and rallies, from the Seoul police notice (English + Korean).</p>
+  <div id="todayList" class="list">Loading…</div>
+</section>
+
+<section id="taxi">
+  <h2>🚕 Show-the-driver taxi card</h2>
+  <p class="sub">Pick a place or paste a Korean address from Kakao Map / Naver Map. Then tap <b>Show</b> and hand your phone to the driver.</p>
+  <div class="chips" id="places"></div>
+  <div class="row"><input id="dest" placeholder="Paste Korean address or place name (e.g. 서울역)"><button onclick="showCard()">Show</button></div>
+</section>
+
+<section id="slang">
+  <h2>🍜 Korean review slang decoder</h2>
+  <p class="sub">Paste a review from Kakao Map or Naver. We explain the slang Google Translate gets wrong — and flag sponsored reviews.</p>
+  <textarea id="review" placeholder="예: 웨이팅 지옥이지만 존맛탱… 가성비 혜자, 재방문 의사 있음 (내돈내산)"></textarea>
+  <div style="margin-top:8px"><button onclick="decode()">Decode</button></div>
+  <div id="decoded"></div>
+</section>
+
+<section id="guides">
+  <h2>📚 Seoul Guide articles</h2>
+  <p class="sub">Longer how-tos: transfers, Seoul Station, avoiding rip-offs, and more.</p>
+  <div id="guideList" class="list">Loading…</div>
+</section>
+
+</main>
+<div id="card"><div class="say">여기로 가 주세요</div><div class="ko" id="cardKo"></div><div class="en" id="cardEn">Please take me here</div><button onclick="card.classList.remove('on')">Close</button></div>
+<footer>Made by the <a href="https://annah0616.blogspot.com/search/label/Seoul%20Guide">Seoul Guide</a> blog. Closure info comes from public notices by the Seoul Metropolitan Police Agency; always allow extra time.</footer>
+
+<script>
+const BLOG = 'https://annah0616.blogspot.com';
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+// ── taxi card ──
+const PLACES = [
+  ['Seoul Station', '서울역'], ['Incheon Airport T1', '인천국제공항 제1여객터미널'], ['Incheon Airport T2', '인천국제공항 제2여객터미널'],
+  ['Gimpo Airport', '김포공항'], ['Myeongdong Station', '명동역'], ['Hongik Univ. Station', '홍대입구역'],
+  ['Gangnam Station', '강남역'], ['Gyeongbokgung Palace', '경복궁'], ['N Seoul Tower', 'N서울타워'],
+  ['Dongdaemun Design Plaza', '동대문디자인플라자'], ['Lotte World Tower', '롯데월드타워'], ['Itaewon Station', '이태원역'],
+];
+$('places').innerHTML = PLACES.map((p, i) => `<button onclick="pick(${i})">${esc(p[0])}</button>`).join('');
+function pick(i) { $('dest').value = PLACES[i][1]; $('dest').dataset.en = PLACES[i][0]; showCard(); }
+function showCard() {
+  const v = $('dest').value.trim(); if (!v) return;
+  $('cardKo').textContent = v;
+  $('cardEn').textContent = 'Please take me here' + ($('dest').dataset.en && PLACES.some(p => p[1] === v) ? ' — ' + $('dest').dataset.en : '');
+  $('card').classList.add('on');
+}
+$('dest').addEventListener('input', () => { delete $('dest').dataset.en; });
+
+// ── slang decoder ── [pattern, term, meaning, flag]
+const SLANG = [
+  ['존맛탱|존맛|JMT|jmt', '존맛(탱) / JMT', 'Insanely delicious. Crude-but-common intensifier; the strongest praise you will see.'],
+  ['핵맛', '핵맛', '"Nuclear-level tasty" — very delicious.'],
+  ['노맛', '노맛', 'No taste — bland or just not good.'],
+  ['인생\\s?맛집', '인생 맛집', '"Restaurant of my life" — the best place they have ever eaten.'],
+  ['맛집', '맛집', 'A restaurant known for good food. Very overused; does not mean much on its own.'],
+  ['현지인\\s?맛집', '현지인 맛집', 'Where locals go — usually a good sign for tourists.'],
+  ['웨이팅\\s?지옥', '웨이팅 지옥', '"Waiting hell" — expect a long line.'],
+  ['웨이팅', '웨이팅', 'Waiting line. Often you register on a tablet at the door or on an app (e.g. Catch Table) and get a text.'],
+  ['오픈런', '오픈런', '"Open run" — people line up before opening. Go early or expect a wait.'],
+  ['줄\\s?서는\\s?집', '줄 서는 집', 'A place with a line out the door.'],
+  ['가성비', '가성비', 'Good value for money.'],
+  ['가심비', '가심비', 'Worth it for how happy it makes you, even if not cheap.'],
+  ['갓성비', '갓성비', '"God-tier value" — excellent value for money.'],
+  ['혜자', '혜자', 'Generous portion or price for what you get (from a famously generous lunchbox brand).'],
+  ['창렬', '창렬', 'Overpriced and stingy — the opposite of 혜자.'],
+  ['가격\\s?착', '가격 착함', '"Kind price" — reasonably priced.'],
+  ['양\\s?많', '양 많음', 'Big portions.'],
+  ['혼밥', '혼밥', 'Eating alone. "혼밥 가능" means solo diners are welcome (some places want 2+ people for certain dishes).'],
+  ['재방문\\s?의사\\s?(있|O|o)', '재방문 의사 있음', 'Would come back. A real compliment in Korean reviews.'],
+  ['재방문\\s?의사\\s?(없|X|x)', '재방문 의사 없음', 'Would not come back.'],
+  ['강추', '강추', 'Strongly recommend.'],
+  ['비추', '비추', 'Do not recommend.'],
+  ['단짠', '단짠', 'Sweet-and-salty combo.'],
+  ['맵찔이', '맵찔이', 'Someone who can\'t handle spice. "맵찔이도 가능" = mild enough for spice wimps.'],
+  ['매콤', '매콤', 'Pleasantly spicy. Korean "a little spicy" can still be quite spicy.'],
+  ['꾸덕', '꾸덕', 'Thick and rich (sauces, cheesecake, cream).'],
+  ['쫀득', '쫀득', 'Chewy in a good way (rice cakes, bread).'],
+  ['겉바속촉', '겉바속촉', 'Crispy outside, moist inside — top praise for fried food and pastries.'],
+  ['뷰\\s?맛집', '뷰맛집', 'Great view — may mean the food itself is average.'],
+  ['분위기\\s?맛집', '분위기 맛집', 'Great atmosphere — again, maybe not the food.'],
+  ['사장님이?\\s?친절', '사장님 친절', 'The owner is friendly. Common, mild praise.'],
+  ['서비스로|서비스\\s?(주|줬|줌)', '서비스', 'Something given for free (a side dish, drink). Not "service" in the English sense.'],
+  ['무한\\s?리필', '무한리필', 'All-you-can-eat / unlimited refills.'],
+  ['셀프\\s?바', '셀프바', 'Self-serve bar for side dishes — refill as much as you want.'],
+  ['키오스크', '키오스크', 'You order and pay at a touchscreen machine. Many have an English button.'],
+  ['포장', '포장', 'Takeout.'],
+  ['내돈내산', '내돈내산', '"Bought with my own money" — the reviewer says it is NOT sponsored.', 0],
+  ['리뷰\\s?이벤트', '리뷰 이벤트', 'Review event: customers get a free drink or discount for posting a review. Ratings can be inflated.', 1],
+  ['체험단', '체험단', 'Sponsored tester — the reviewer ate for free. Treat with caution.', 1],
+  ['협찬', '협찬', 'Sponsored. The business provided something in exchange for the review.', 1],
+  ['광고', '광고', 'Advertisement — a paid post.', 1],
+  ['별점\\s?테러', '별점 테러', 'Review bombing — a wave of unfair 1-star reviews.'],
+];
+function decode() {
+  const t = $('review').value;
+  const hits = SLANG.filter(s => new RegExp(s[0]).test(t));
+  $('decoded').innerHTML = hits.length
+    ? hits.map(s => `<div class="hit ${s[3] ? 'flag' : ''}"><b>${esc(s[1])}</b> ${s[3] ? '⚠️' : ''}<br>${esc(s[2])}</div>`).join('')
+    : '<p class="sub">No slang found. Plain Korean — Papago or Google Translate will handle this one.</p>';
+}
+
+// ── blog feeds (JSONP: Blogger feeds have no CORS) ──
+function feed(label, cb, n) {
+  const s = document.createElement('script');
+  s.src = `${BLOG}/feeds/posts/default/-/${encodeURIComponent(label)}?alt=json-in-script&max-results=${n}&callback=${cb}`;
+  s.onerror = () => { const el = cb === 'onToday' ? 'todayList' : 'guideList'; $(el).textContent = 'Could not load. Open the blog instead.'; };
+  document.body.appendChild(s);
+}
+function render(el, j, empty) {
+  const es = (j.feed && j.feed.entry) || [];
+  $(el).innerHTML = es.length ? es.map(e => {
+    const link = (e.link.find(l => l.rel === 'alternate') || {}).href;
+    return `<a href="${esc(link)}">${esc(e.title.$t)}<small>${esc(e.published.$t.slice(0, 10))}</small></a>`;
+  }).join('') : `<p class="sub">${empty}</p>`;
+}
+function onToday(j) { render('todayList', j, 'Nothing posted yet. Updates go up on weekend mornings (Korea time).'); }
+function onGuides(j) { render('guideList', j, 'First guides are coming soon.'); }
+feed('Seoul Today', 'onToday', 3);
+feed('Seoul Guide', 'onGuides', 12);
+</script>
+</body>
+</html>
