@@ -158,7 +158,7 @@ function eng_autoSegs(id){
   try { cs = eng_cues_(v.yt); } catch (e) { return { error: '자막을 못 읽었어요: ' + e.message }; }
   if (!cs.cues.length){
     // 구글 서버 IP 는 유튜브가 「로봇이 아닌지 확인」으로 막는 일이 많다(2026-09 확인). 씨드 영상은 PC 에서 미리 나눠 둔 것
-    if ((cs.why || '').indexOf('LOGIN_REQUIRED') >= 0) return { error: '유튜브가 자동 자막 읽기를 막았어요. 이 영상은 Claude 에게 「챱 해줘」라고 하거나, 아래 ✂ 로 나눠 주세요' };
+    if ((cs.why || '').indexOf('LOGIN_REQUIRED') >= 0) return { error: '유튜브가 자동 자막 읽기를 막았어요. 이 영상은 아래 ✂ 로 나눠 주세요' };
     return { error: '이 영상엔 영어 자막이 없어요. ✂ 로 손으로 나눠 주세요' };
   }
   var segs = eng_chop_(cs.cues);
