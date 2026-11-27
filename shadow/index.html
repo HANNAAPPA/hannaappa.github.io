@@ -184,7 +184,7 @@ h3{font-size:15px;margin:0 0 12px;}
 <div class="wrap"><div class="pane on" id="pane-eng"><div class="state">불러오는 중…</div></div>
 <div class="dist-foot">아빠 도구함 · 기록은 이 사본에만 저장돼요</div></div>
 <script>
-var loaded={eng:false}, current="eng";
+var DOW=["일","월","화","수","목","금","토"], loaded={eng:false}, current="eng";
 function p2(n){return ('0'+n).slice(-2);}
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function busy(on){var b=document.getElementById("refresh");b.disabled=on;b.textContent=on?"불러오는 중…":"새로고침";}
