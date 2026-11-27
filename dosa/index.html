@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex,nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="도구함">
+<meta name="theme-color" content="#ffffff">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>아빠 도구함</title>
+<script src="dosa.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f6f9;color:#1f2733;font-family:system-ui,"Malgun Gothic",sans-serif;padding:env(safe-area-inset-top) 16px 40px}
+h1{font-size:22px;margin:22px 4px 6px}p.sub{color:#6b7484;font-size:14px;margin:0 4px 18px}
+.app{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid #e5e8ee;border-radius:16px;padding:14px;margin-bottom:12px;text-decoration:none;color:inherit;cursor:pointer}
+.app img{width:58px;height:58px;border-radius:14px}.app b{display:block;font-size:17px}.app span{font-size:13px;color:#6b7484}
+.foot{color:#8a93a3;font-size:12px;text-align:center;margin-top:26px;line-height:1.6}
+</style></head><body>
+<h1>🧰 아빠 도구함</h1><p class="sub">새 도구가 나오면 여기에 생겨요. 다시 설치할 필요 없어요.</p>
+<a class="app" data-p="shadow/"><img src="shadow/icon-180.png" alt=""><div><b>따라 말하기</b><span>유튜브 영어 동요를 문장마다 끊어 듣고 따라 말하기·녹음</span></div></a>
+<div class="foot">기록은 내 구글 시트 사본에만 저장돼요<br>이 화면을 홈 화면에 추가해 두면 편해요</div>
+<script>
+if(!dosa.api()) dosaSetup();
+document.querySelectorAll('.app').forEach(function(a){ a.href=dosa.link(a.dataset.p); });
+</script></body></html>
